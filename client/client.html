@@ -3,10 +3,157 @@
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
+    const init = () => {
+    
+    
+    var content = document.getElementById("content");
+    const login = document.getElementById("login");
+    const validate = document.getElementById("validate");
+     const status = document.querySelector("#status");
+    let loginbool = false;
+    let validatebool = false;
+    $("#send").click(function(){
+       let statusOption = document.getElementById("page");
+       let statusOptionvalue = statusOption.options[statusOption.selectedIndex].value;
+       let typeOption = document.getElementById("type");
+       let typeOptionvalue = typeOption.options[typeOption.selectedIndex].value;
+       let URLinsert = statusOptionvalue.replace("/","");
+       let URL = "http://localhost:3000/" + URLinsert;
+       if(loginbool)
+        {
+            URL = URL + "?loggedIn=yes";
+        }
+       else if(validatebool)
+        {
+            URL = URL + "?valid=true";
+        }
+        $.ajax({url: URL, 
+                type: "GET",
+                headers:{
+                Accept: typeOptionvalue
+                },
+                success: function(response, status, xhr){
+            $("#status").empty();
+            loginbool = false;
+            validatebool = false;
+            $("#content").empty();
+            console.log("ajax reached the server");
+            var message; 
+            var h3 = document.createElement("h3");
+            var p = document.createElement("p");
+            console.log(xhr.getResponseHeader("Content-type"))
+            let contentType = xhr.getResponseHeader("Content-type");
+            switch(contentType){
+                case 'text/xml':
+                    console.dir(xhr.responseText);
+                    message = response.querySelector('message').textContent;
+                    break;
+                case 'application/json':
+                    console.dir(response);
+                    message = response.message;
+                    break;
+                default:
+                    message = response.message;
+                    break;
+            }
+            //console.log(status);
+            switch(status){
+                case "success":
+                  h3.innerHTML = "Success";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+            }
+    
+        },
+            error: function(xhr,textStatus,errorThrown){
+            $("#status").empty();
+            $("#content").empty();
+            status.innerHTML = "";
+            loginbool = false;
+            validatebool = false;
+            console.log("ajax reached the server");
+            var message; 
+            var h3 = document.createElement("h3");
+            var p = document.createElement("p");
+            console.log(xhr.getResponseHeader("Content-type"));
+            let contentType = xhr.getResponseHeader("Content-type");
+            switch(contentType){
+                case 'text/xml':
+                    console.dir(xhr.responseText);
+                    message = xhr.responseXML.querySelector('message').textContent;
+                    break;
+                case 'application/json':
+                    console.dir(xhr.responseJSON);
+                    message = xhr.responseJSON.message;
+                    break;
+                default:
+                    message = xhr.responseJSON.message;
+                    break;
+            }
+            //console.log(status);
+            switch(xhr.statusText){
+                case "Bad Request":
+                  h3.innerHTML = "Bad Request";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+                case "Unauthorized":
+                  h3.innerHTML = "Unauthorized";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+                case "Forbidden":
+                  h3.innerHTML = "Forbidden";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+                case "Internal Server Error":
+                  h3.innerHTML = "Internal Server Error";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+                case "Not Implemented":
+                  h3.innerHTML = "Not Implemented";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+                case "Not Found":
+                  h3.innerHTML = "Not Found";
+                  p.innerHTML = "Message: " + message;
+                  content.appendChild(h3);
+                  content.appendChild(p);
+                  break;
+            }
+    
+            }
+        });
+    });
+       
+        login.onclick = () => {
+            loginbool = true;
+            validatebool = false;
+            status.innerHTML = "You are logged in";
+        };
+        
+        validate.onclick = () => {
+            validatebool = true;
+            loginbool = false;
+            status.innerHTML = "You are validated";
+        }
+        
+  };
 
+    window.onload = init;
   </script>
 </head>
 <body>
@@ -26,7 +173,12 @@
       <option value="text/xml">XML</option>
     </select>
     <button id="send">Send</button>
+    <button id="login">Log in</button>
+    <button id="validate">Validate</button>
   </section>
+    <section id="statusSection">
+        <p id="status"></p>
+    </section>
   <section id="content">
   </section>
 </body>
