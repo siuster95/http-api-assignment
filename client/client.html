@@ -9,7 +9,7 @@
     const init = () => {
     
     
-    var content = document.getElementById("content");
+    const content = document.getElementById("content");
     const login = document.getElementById("login");
     const validate = document.getElementById("validate");
      const status = document.querySelector("#status");
@@ -41,9 +41,9 @@
             validatebool = false;
             $("#content").empty();
             console.log("ajax reached the server");
-            var message; 
-            var h3 = document.createElement("h3");
-            var p = document.createElement("p");
+            const message; 
+            const h3 = document.createElement("h3");
+            const p = document.createElement("p");
             console.log(xhr.getResponseHeader("Content-type"))
             let contentType = xhr.getResponseHeader("Content-type");
             switch(contentType){
@@ -77,9 +77,9 @@
             loginbool = false;
             validatebool = false;
             console.log("ajax reached the server");
-            var message; 
-            var h3 = document.createElement("h3");
-            var p = document.createElement("p");
+            const message; 
+            const h3 = document.createElement("h3");
+           const p = document.createElement("p");
             console.log(xhr.getResponseHeader("Content-type"));
             let contentType = xhr.getResponseHeader("Content-type");
             switch(contentType){
