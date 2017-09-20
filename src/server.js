@@ -34,13 +34,10 @@ const onRequest = (request, response) => {
     otherUrlstruct[urlparts.pathname](request, response, acceptType, query);
   } else {
     console.log('html');
-    if(url.pathname != "")
-    {
-      ResponsesHandler.getNotfound(request,response,["application/json"]);
-    }
-    else
-    {
-    ResponsesHandler.getIndex(request, response, acceptType);
+    if (url.pathname !== '') {
+      ResponsesHandler.getNotfound(request, response, ['application/json']);
+    } else {
+      ResponsesHandler.getIndex(request, response, acceptType);
     }
   }
 };

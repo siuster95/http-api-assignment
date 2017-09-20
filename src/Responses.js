@@ -4,15 +4,14 @@ const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 const css = fs.readFileSync(`${__dirname}/../client/style.css`);
 
 const getSuccess = (request, response, type) => {
-    if (type[0] === "text/xml") {
+  if (type[0] === 'text/xml') {
     response.writeHead(200, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>This is a successful response</message>';
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-  }
-    else{
+  } else {
     response.writeHead(200, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'This is a successful response' });
     response.write(object);
@@ -22,23 +21,21 @@ const getSuccess = (request, response, type) => {
 
 const getbadRequest = (request, response, type, query) => {
   console.log(query);
-  if (query === "valid=true") {
-    if (type[0] === "text/xml") {
+  if (query === 'valid=true') {
+    if (type[0] === 'text/xml') {
       response.writeHead(200, { 'Content-Type': 'text/xml' });
       let responseXML = '<response>';
       responseXML += '<message>This request has the required parameters</message>';
       responseXML += '</response>';
       response.write(responseXML);
       response.end();
-    }
-    else {
+    } else {
       response.writeHead(200, { 'Content-Type': 'application/json' });
       const object = JSON.stringify({ message: 'This request has the required parameters' });
       response.write(object);
       response.end();
     }
-  } else{
-   if (type[0] === "text/xml") {
+  } else if (type[0] === 'text/xml') {
     response.writeHead(400, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>Missing valid query parameter set to true</message>';
@@ -46,35 +43,31 @@ const getbadRequest = (request, response, type, query) => {
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-  }
-    else {
+  } else {
     response.writeHead(400, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'Missing valid query parameter set to true', id: 'badRequest' });
     response.write(object);
     response.end();
   }
-  }
 };
 
 const getUnauthorized = (request, response, type, query) => {
   console.log(query);
-  if (query === "loggedIn=yes") {
-    if (type[0] === "text/xml") {
+  if (query === 'loggedIn=yes') {
+    if (type[0] === 'text/xml') {
       response.writeHead(200, { 'Content-Type': 'text/xml' });
       let responseXML = '<response>';
       responseXML += '<message>You have successfully viewed the content</message>';
       responseXML += '</response>';
       response.write(responseXML);
       response.end();
-    }
-     else {
+    } else {
       response.writeHead(200, { 'Content-Type': 'application/json' });
       const object = JSON.stringify({ message: 'You have successfully viewed the content' });
       response.write(object);
       response.end();
     }
-  } else{
-   if (type[0] === "text/xml") {
+  } else if (type[0] === 'text/xml') {
     response.writeHead(401, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>Missing loggedIn query parameter set to yes</message>';
@@ -82,18 +75,16 @@ const getUnauthorized = (request, response, type, query) => {
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-   }
-    else {
+  } else {
     response.writeHead(401, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'Missing loggedIn query parameter set to yes', id: 'unauthorized' });
     response.write(object);
     response.end();
   }
-  }
-  };
+};
 
 const getForbidden = (request, response, type) => {
-  if (type[0] === "text/xml") {
+  if (type[0] === 'text/xml') {
     response.writeHead(403, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>You do not have access to this content</message>';
@@ -101,8 +92,7 @@ const getForbidden = (request, response, type) => {
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-  }
-   else {
+  } else {
     response.writeHead(403, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'You do not have access to this content', id: 'forbidden' });
     response.write(object);
@@ -111,7 +101,7 @@ const getForbidden = (request, response, type) => {
 };
 
 const getInternal = (request, response, type) => {
-    if (type[0] === "text/xml") {
+  if (type[0] === 'text/xml') {
     response.writeHead(500, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>Internal Server Error, Something went wrong</message>';
@@ -119,8 +109,7 @@ const getInternal = (request, response, type) => {
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-  }
-   else {
+  } else {
     response.writeHead(500, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'Internal Server Error, Something went wrong', id: 'internalError' });
     response.write(object);
@@ -129,7 +118,7 @@ const getInternal = (request, response, type) => {
 };
 
 const getNotimplemented = (request, response, type) => {
-  if (type[0] === "text/xml") {
+  if (type[0] === 'text/xml') {
     response.writeHead(501, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>A get request for this page has not been implemented yet. Check again later for updated content</message>';
@@ -137,8 +126,7 @@ const getNotimplemented = (request, response, type) => {
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-  }
-   else {
+  } else {
     response.writeHead(501, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'A get request for this page has not been implemented yet. Check again later for updated content', id: 'notImplemented' });
     response.write(object);
@@ -147,7 +135,7 @@ const getNotimplemented = (request, response, type) => {
 };
 
 const getNotfound = (request, response, type) => {
-  if (type[0] === "text/xml") {
+  if (type[0] === 'text/xml') {
     response.writeHead(404, { 'Content-Type': 'text/xml' });
     let responseXML = '<response>';
     responseXML += '<message>The page you are looking for was not found</message>';
@@ -155,8 +143,7 @@ const getNotfound = (request, response, type) => {
     responseXML += '</response>';
     response.write(responseXML);
     response.end();
-  }
-   else {
+  } else {
     response.writeHead(404, { 'Content-Type': 'application/json' });
     const object = JSON.stringify({ message: 'The page you are looking for was not found', id: 'notFound' });
     response.write(object);
