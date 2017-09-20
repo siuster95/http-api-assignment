@@ -21,7 +21,7 @@
        let typeOption = document.getElementById("type");
        let typeOptionvalue = typeOption.options[typeOption.selectedIndex].value;
        let URLinsert = statusOptionvalue.replace("/","");
-       let URL = "http://localhost:3000/" + URLinsert;
+       let URL = "http://js-http-api.herokuapp.com" + URLinsert;
        if(loginbool)
         {
             URL = URL + "?loggedIn=yes";
